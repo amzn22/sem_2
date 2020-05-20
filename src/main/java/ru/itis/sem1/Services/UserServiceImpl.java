@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
         User user = User.builder()
                 .email(signUpDto.getEmail())
                 .password(passwordEncoder.encode(signUpDto.getPassword()))
-                .name(signUpDto.name)
+                .username(signUpDto.username)
                 .role(Role.USER)
                 .state(State.NOT_CONFIRMED)
                 .uuid(UUID.randomUUID().toString())

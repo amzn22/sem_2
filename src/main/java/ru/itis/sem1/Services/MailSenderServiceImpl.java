@@ -19,10 +19,10 @@ public class MailSenderServiceImpl implements MailSenderService{
     @Async
     public void sendMail(User user) {
         SimpleMailMessage message = new SimpleMailMessage();
-
+        message.setFrom("alenamailservice@gmail.com");
         message.setTo(user.getEmail());
         message.setSubject("Auth mail");
-        message.setText("http:localhost:8080/auth?uuid="+ user.getUuid());
+        message.setText("http://localhost:8088/auth?uuid="+ user.getUuid());
 
         javaMailSender.send(message);
     }

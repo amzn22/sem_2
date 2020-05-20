@@ -1,8 +1,15 @@
 package ru.itis.sem1.Models;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DestinationPoint {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,6 +42,11 @@ public class DestinationPoint {
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
+    }
+
+    @Override
+    public String toString() {
+        return shortName;
     }
 }
 

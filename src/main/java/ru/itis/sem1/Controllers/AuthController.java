@@ -15,9 +15,8 @@ public class AuthController {
     private AuthCheckService authCheckService;
 
     @GetMapping("/auth")
-    public String authPage(@RequestParam String uuid, Authentication authentication, Model model){
-        boolean status = authCheckService.checkAuth(authentication,uuid);
-        model.addAttribute("status",status);
-        return "auth";
+    public String authPage(@RequestParam String uuid, Model model){
+        authCheckService.checkAuth(uuid);
+        return "redirect:/login";
     }
 }

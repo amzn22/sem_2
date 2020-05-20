@@ -1,31 +1,31 @@
-package ru.itis.sem1.Controllers;
+package ru.itis.sem1.Rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.EntityResponse;
 import ru.itis.sem1.Models.DestinationPoint;
 import ru.itis.sem1.Models.Route;
 import ru.itis.sem1.Repositories.DestinationPointRepository;
 import ru.itis.sem1.Repositories.RouteRepository;
 
-import java.util.List;
 import java.util.Optional;
 
-@Controller
-@RequestMapping(path="/route")
-public class RouteController {
+@RestController
+public class RouteRestController {
 
     @Autowired
     RouteRepository routeRepository;
     @Autowired
     DestinationPointRepository destinationPointRepository;
 
-    @PostMapping("/add")
-    public String addNewRoute(@RequestParam String dp1SN, @RequestParam String dp2SN,
-                              @RequestParam Integer distance, @RequestParam Integer cost,
-                              Model model) {
+    @PostMapping("/rest/route")
+    public ResponseEntity addNewRoute(@RequestParam String dp1SN, @RequestParam String dp2SN,
+                                      @RequestParam Integer distance, @RequestParam Integer cost,
+                                      Model model) {
         Route route = new Route();
         Route route_example = new Route();
         Optional<DestinationPoint> dp1 = destinationPointRepository.findDestinationPointByShortName(dp1SN);
@@ -38,25 +38,34 @@ public class RouteController {
         if (dp1.isEmpty() || dp2.isEmpty()) {
             if(dp1.isEmpty()) model.addAttribute("dp1", dp1SN);
             if(dp2.isEmpty()) model.addAttribute("dp2", dp2SN);
-            return "adminpanel";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         if(existing_route.isPresent()) {
             model.addAttribute("exist_route", true);
+            return ResponseEntity.status(HttpStatus.FOUND).build();
         } else {
             route.setDp1(dp1.get());
             route.setDp2(dp2.get());
             route.setDistance(distance);
             route.setCost(cost);
-            routeRepository.save(route);
-            model.addAttribute("success_route", true);
+            return ResponseEntity.ok(routeRepository.save(route));
         }
-        return "adminpanel";
     }
 
-    @GetMapping("/all")
-    public String getAllRoutes(Model model) {
-        List<Route> routes = routeRepository.findAll();
-        model.addAttribute("routes", routes);
-        return "routes";
+    @GetMapping("/rest/route")
+    public ResponseEntity getAllRoutes() {
+        return ResponseEntity.ok(routeRepository.findAll());
+    }
+    @GetMapping("/rest/route/{id}")
+    public ResponseEntity getRoute(@PathVariable Integer id) {
+        return ResponseEntity.ok(routeRepository.findOneById(id));
+
+    }
+    @DeleteMapping("/rest/route/{id}")
+    public ResponseEntity deleteDestinationPoint(@PathVariable Integer id) {
+        routeRepository.deleteById(id);
+        Route route = routeRepository.findOneById(id);
+        if (route == null) return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }

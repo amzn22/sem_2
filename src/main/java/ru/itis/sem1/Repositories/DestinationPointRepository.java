@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface DestinationPointRepository extends JpaRepository<DestinationPoint, Integer>{
     Optional<DestinationPoint> findDestinationPointByShortName(String shortName);
+
+    DestinationPoint findOneById(Integer id);
 }

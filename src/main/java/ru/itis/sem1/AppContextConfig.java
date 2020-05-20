@@ -3,7 +3,6 @@ package ru.itis.sem1;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
@@ -35,8 +34,8 @@ public class AppContextConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("ru.itis.sem.api"))
-                .paths(PathSelectors.ant("/api/**"))
+                .apis(RequestHandlerSelectors.basePackage("ru.itis.sem1.Rest"))
+                .paths(PathSelectors.ant("/rest/**"))
                 .build();
     }
 }

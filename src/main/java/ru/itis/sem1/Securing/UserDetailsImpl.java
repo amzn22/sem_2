@@ -5,7 +5,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.itis.sem1.Models.User;
 
-
 import java.util.Collection;
 import java.util.Collections;
 
@@ -34,7 +33,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getUsername();
     }
 
     @Override

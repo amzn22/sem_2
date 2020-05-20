@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Admin panel!</title>
+    <#include "bootstrap.ftlh">
 </head>
 <body>
 <h1>Admin panel</h1>
